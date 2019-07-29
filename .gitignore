@@ -1,2 +1,12 @@
 node_modules
 package-lock.json
+
+# added by me
+dist
+# ignore trash in my machine
+trash
+# timestamp of last build
+.lastDistBuildDate
+.tscache
+# database
+dockers/data

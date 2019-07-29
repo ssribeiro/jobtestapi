@@ -1,14 +1,16 @@
 {
-  "name": "app",
+  "name": "jobtestapi",
   "version": "1.0.0",
-  "description": "",
+  "description": "Job test application",
   "main": "index.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "start": "node dist/server.js",
+    "dev": "node ./node_modules/nodemon/bin/nodemon.js",
+    "build": "npm run clean && ./node_modules/typescript/bin/tsc",
+    "clean": "rimraf ./dist"
   },
   "keywords": [],
-  "author": "",
+  "author": "SSRibeiro",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",

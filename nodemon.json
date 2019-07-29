@@ -1,0 +1,6 @@
+{
+  "stdout": true,
+  "watch": ["./src"],
+  "exec": "npm run build && echo $(date) > .lastDistBuildDate",
+  "ext": "ts"
+}
