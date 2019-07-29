@@ -19,7 +19,9 @@
       "./types"
     ],
     "types": [
-      "node"
+      "node",
+      "chai",
+      "mocha"
     ]
   },
   "include": [
