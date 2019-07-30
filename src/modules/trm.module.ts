@@ -1,10 +1,18 @@
 import * as rpn from 'request-promise-native'
-import { error, ITrmRateEntry, ITrmRateList, logger, Store } from '../'
+import {
+    error,
+    ITrmRateData,
+    ITrmRateEntry,
+    ITrmRateList,
+    logger,
+    Store,
+} from '../'
 
 import { ICurrencyCode, iCurrencyCode } from '../interfaces/currency-code.i'
 
 export const NO_CURRENCY_CODE_VALIDATION_ERROR =
     'no currency code validation error'
+export const RESULTS_OFF_LIMIT_ERROR = 'Results off the limit'
 export const TRM_COLLECTION_NAME = 'trm'
 export const UNIQUE_WORKING_PERIOD = '30'
 export const TRM_API_URI =
@@ -47,7 +55,29 @@ const updateTablesForCurrency = async (
     await db.collection(TRM_COLLECTION_NAME).insertOne(trmRateEntry)
 }
 
+const retrievePastStoredRates = async (
+    page: number = 0,
+    limit: number = 30
+): Promise<ITrmRateData> => {
+    const db = await Store.getDb()
+    const resultsCursor = await db.collection(TRM_COLLECTION_NAME).find()
+    const howMany = await resultsCursor.count()
+    if (page * limit > howMany) {
+        throw error.is(RESULTS_OFF_LIMIT_ERROR)
+    }
+    await resultsCursor.limit(limit)
+    await resultsCursor.skip(page * limit)
+    const data: ITrmRateData = {
+        limit,
+        page,
+        results: await resultsCursor.toArray(),
+        total: howMany,
+    }
+    return data
+}
+
 export const TrmModule = {
+    retrievePastStoredRates,
     updateTablesForCurrency,
     validateCurrencyCode,
 }

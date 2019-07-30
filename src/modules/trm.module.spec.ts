@@ -10,10 +10,12 @@ import {
 } from './trm.module'
 
 describe('TrmModule', () => {
-
-    after((done)=>{
-      Store.stop().then(done)
+    after(done => {
+        Store.stop().then(done)
     })
+
+    const sampleSourceCurrencyCode = 'USD'
+    const sampleTargetCurrencyCode = 'UYU'
 
     it('should validate currency code', () => {
         const currencyCandidates = [
@@ -58,8 +60,8 @@ describe('TrmModule', () => {
             json: true, // Automatically parses the JSON string in the response
             qs: {
                 period: '30',
-                source: 'USD',
-                target: 'UYU',
+                source: sampleSourceCurrencyCode,
+                target: sampleTargetCurrencyCode,
             },
             uri: 'https://transferwise.com/gb/currency-converter/api/historic',
         }
@@ -77,4 +79,18 @@ describe('TrmModule', () => {
         expect(storedValue.rate).to.be.equals(trmRateGot)
     }).timeout(5000)
 
+    it('should retrieve trm currency data', async () => {
+        const trmRateData = await TrmModule.retrievePastStoredRates()
+        expect(trmRateData).to.be.exist
+        expect(trmRateData.limit).to.be.equals(30)
+        expect(trmRateData.page).to.be.equals(0)
+        expect(trmRateData.results).to.be.an('array')
+        expect(trmRateData.results[0].source).to.be.equal(
+            sampleSourceCurrencyCode
+        )
+        expect(trmRateData.results[0].target).to.be.equal(
+            sampleTargetCurrencyCode
+        )
+        expect(trmRateData.results[0].rate).to.be.an('number')
+    }).timeout(5000)
 })

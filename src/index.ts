@@ -3,9 +3,10 @@ import { error, JobtestError } from './tools/error'
 import { logger } from './tools/logger'
 
 import {
-  ICurrencyCode,
-  ITrmRateEntry,
-  ITrmRateList,
+    ICurrencyCode,
+    ITrmRateData,
+    ITrmRateEntry,
+    ITrmRateList,
 } from './interfaces'
 
 import {
@@ -24,9 +25,10 @@ export {
     ICurrencyCode,
     ITrmRateList,
     ITrmRateEntry,
+    ITrmRateData,
     // Modules
     Service,
     Store,
     Portal,
-    Trm
+    Trm,
 }
