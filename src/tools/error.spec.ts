@@ -1,3 +1,4 @@
+/* tslint:disable:no-console */
 /* tslint:disable:no-unused-expression */
 import { expect } from 'chai'
 import { spy } from 'sinon'
@@ -5,10 +6,10 @@ import { spy } from 'sinon'
 import chalk from 'chalk'
 
 import {
+    DEFAULT_ERROR_MESSAGE,
     error,
     JobtestError,
     OPERATIONAL_PREFIX,
-    DEFAULT_ERROR_MESSAGE,
 } from './error'
 
 describe('error', () => {
@@ -112,7 +113,7 @@ describe('error', () => {
                 expect(jobtestError.message).to.be.equal('strange error')
             }
         })
-        
+
         it('throw JobtestErrors in expected ways', () => {
             expect(error.throwJobtestError).to.be.exist
 
@@ -164,7 +165,6 @@ describe('error', () => {
                 expect(jobtestError.message).to.be.equal('Error: strange error')
             }
         })
-        
     })
 
     describe('op function', () => {
