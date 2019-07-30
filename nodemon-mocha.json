@@ -1,0 +1,6 @@
+{
+  "stdout": true,
+  "watch": ["./src"],
+  "exec": "npm run mocha-test",
+  "ext": "ts"
+}

@@ -19,7 +19,7 @@ interface IPortalModuleState {
     httpServer: http.Server | null
 }
 
-const state: IPortalModuleState = {
+export const state: IPortalModuleState = {
     expressApp: express()
         .use(cors())
         .use(express.urlencoded({ extended: false }))

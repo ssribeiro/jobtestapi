@@ -8,6 +8,7 @@
     "dev": "node ./node_modules/nodemon/bin/nodemon.js",
     "build": "npm run clean && ./node_modules/typescript/bin/tsc",
     "clean": "rimraf ./dist",
+    "mocha-watch": "node ./node_modules/nodemon/bin/nodemon.js --config nodemon-mocha.json",
     "mocha-test": "node_modules/.bin/mocha --opts ./mocha.opts",
     "coverage": "nyc npm run mocha-test",
     "test": "npm run build && npm run coverage",
