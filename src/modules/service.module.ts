@@ -8,6 +8,7 @@ import { IPortalModuleConfig } from './portal.module'
 import { IStoreModuleConfig } from './store.module'
 
 export const NOT_ALLOWED_IN_PRODUCTION_ERROR = 'NOT_ALLOWED_IN_PRODUCTION_ERROR'
+export const NOT_STARTED_ERROR = 'NOT_STARTED_ERROR'
 
 export interface IServiceModuleConfig {
     env?: 'dev' | 'prod'
@@ -16,28 +17,26 @@ export interface IServiceModuleConfig {
 }
 
 interface IServiceModuleState {
-    env: 'dev' | 'prod'
-    storeConfig?: IStoreModuleConfig
-    portalConfig?: IPortalModuleConfig
+    serviceConfig: IServiceModuleConfig
     startedAt?: number
 }
 
-const state: IServiceModuleState = {
-    env: 'dev',
+export const state: IServiceModuleState = {
+    serviceConfig: { env: 'dev' },
 }
 
 const config = (serviceConfig: IServiceModuleConfig) => {
-    state.env = serviceConfig.env || 'dev'
+    state.serviceConfig.env = serviceConfig.env || 'dev'
 
     if (serviceConfig.storeConfig) {
-        state.storeConfig = serviceConfig.storeConfig
+        state.serviceConfig.storeConfig = serviceConfig.storeConfig
     }
     if (serviceConfig.portalConfig) {
-        state.portalConfig = serviceConfig.portalConfig
+        state.serviceConfig.portalConfig = serviceConfig.portalConfig
     }
 
-    Store.config(state.storeConfig)
-    Portal.config(state.portalConfig)
+    Store.config(state.serviceConfig.storeConfig)
+    Portal.config(state.serviceConfig.portalConfig)
 }
 
 const start = async () => {
@@ -53,8 +52,19 @@ const start = async () => {
     }
 }
 
+const stop = async () => {
+    if (state.startedAt) {
+        state.startedAt = undefined
+
+        await Portal.stop()
+        await Store.stop()
+    } else {
+        throw NOT_STARTED_ERROR
+    }
+}
+
 const wipe = async () => {
-    if (state.env !== 'dev') {
+    if (state.serviceConfig.env !== 'dev') {
         error.throw(NOT_ALLOWED_IN_PRODUCTION_ERROR)
     } else {
         await Store.wipe()
@@ -65,5 +75,6 @@ const wipe = async () => {
 export const ServiceModule = {
     config,
     start,
+    stop,
     wipe,
 }
