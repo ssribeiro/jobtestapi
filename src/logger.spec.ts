@@ -1,5 +1,6 @@
 /* tslint:disable:no-unused-expression */
 import { expect } from 'chai'
+import { spy } from 'sinon'
 
 import { logger } from './logger'
 
@@ -16,5 +17,23 @@ describe('logger', () => {
         logger.warn('warn will be like this')
         logger.success('success will be like this')
         logger.log('log will be like this')
+    })
+
+    it('should ignore dev marks when not developing', () => {
+        process.env.JOBTEST_ENV = 'otherThanDev'
+        const consoleLogSpy = spy(console, 'log')
+        const stringTest = 'string test'
+        logger.dev(stringTest)
+        consoleLogSpy.should.have.been.not.called
+        consoleLogSpy.restore()
+    })
+
+    it('should ignore dev marks when not developing', () => {
+        process.env.JOBTEST_ENV = 'dev'
+        const consoleLogSpy = spy(console, 'log')
+        const stringTest = 'string test'
+        logger.dev(stringTest)
+        consoleLogSpy.should.have.been.calledWith(stringTest)
+        consoleLogSpy.restore()
     })
 })

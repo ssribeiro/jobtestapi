@@ -1,6 +1,6 @@
 {
   "stdout": true,
   "watch": ["./src"],
-  "exec": "npm run build && echo $(date) > .lastDistBuildDate",
+  "exec": "npm run test && echo $(date) > .lastDistBuildDate",
   "ext": "ts"
 }

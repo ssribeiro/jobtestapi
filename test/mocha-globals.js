@@ -1,5 +1,9 @@
 // REGISTER CHAI PLUGINS HERE
-//var chai = require('chai');
-//var sinonChai = require('sinon-chai');
+var chai = require('chai');
+var sinon = require("sinon");
+var sinonChai = require('sinon-chai');
 
-//chai.use(sinonChai);
+chai.use(sinonChai);
+
+var expect = chai.expect;
+var should = chai.should();
