@@ -72,7 +72,7 @@ export const error = {
      * @param  message the text message of the error OR the generated error itself (Error or JobtestError)
      * @param  ...details any number of objects to include with the error
      */
-    fatal(message?: string | Error, ...details: any[]) {
+    fatal(message?: string | Error, ...details: any[]): any {
         if (!message) {
             logger.error(FATAL_PREFIX + DEFAULT_ERROR_MESSAGE)
         } else if (typeof message === 'string') {
@@ -96,8 +96,11 @@ export const error = {
 
         // It should terminate the application to avoid unpredicted states
         // try it gracefully
-
-        process.exit(1)
+        if (process.env.JOBTEST_ENV !== 'dev') {
+            process.exit(1)
+        } else {
+            return message
+        }
     },
 
     /**

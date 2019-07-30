@@ -23,7 +23,8 @@
       "chai",
       "mocha",
       "sinon",
-      "sinon-chai"
+      "sinon-chai",
+      "chai-things"
     ]
   },
   "include": [
