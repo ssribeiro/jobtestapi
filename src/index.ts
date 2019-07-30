@@ -4,6 +4,8 @@ import { logger } from './tools/logger'
 
 import {
   ICurrencyCode,
+  ITrmRateEntry,
+  ITrmRateList,
 } from './interfaces'
 
 import {
@@ -20,6 +22,8 @@ export {
     JobtestError,
     // interfaces
     ICurrencyCode,
+    ITrmRateList,
+    ITrmRateEntry,
     // Modules
     Service,
     Store,
