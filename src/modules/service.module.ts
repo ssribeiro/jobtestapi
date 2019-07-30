@@ -2,7 +2,7 @@
 // import * as path from 'path'
 import { error, logger } from '../'
 
-import { PortalModule as Portal, StoreModule as Store } from './'
+import { PortalModule, StoreModule } from './'
 
 import { IPortalModuleConfig } from './portal.module'
 import { IStoreModuleConfig } from './store.module'
@@ -25,7 +25,10 @@ export const state: IServiceModuleState = {
     serviceConfig: { env: 'dev' },
 }
 
-const config = (serviceConfig: IServiceModuleConfig) => {
+const config = (serviceConfig?: IServiceModuleConfig) => {
+    if (!serviceConfig) {
+        serviceConfig = {}
+    }
     state.serviceConfig.env = serviceConfig.env || 'dev'
 
     if (serviceConfig.storeConfig) {
@@ -35,8 +38,8 @@ const config = (serviceConfig: IServiceModuleConfig) => {
         state.serviceConfig.portalConfig = serviceConfig.portalConfig
     }
 
-    Store.config(state.serviceConfig.storeConfig)
-    Portal.config(state.serviceConfig.portalConfig)
+    StoreModule.config(state.serviceConfig.storeConfig)
+    PortalModule.config(state.serviceConfig.portalConfig)
 }
 
 const start = async () => {
@@ -45,7 +48,7 @@ const start = async () => {
         // PortalModule,
         // CronjobModule
 
-        await Portal.start()
+        await PortalModule.start()
 
         state.startedAt = Date.now()
         logger.success('Service ' + ' started at ' + state.startedAt)
@@ -56,8 +59,8 @@ const stop = async () => {
     if (state.startedAt) {
         state.startedAt = undefined
 
-        await Portal.stop()
-        await Store.stop()
+        await PortalModule.stop()
+        await StoreModule.stop()
     } else {
         throw NOT_STARTED_ERROR
     }
@@ -67,7 +70,7 @@ const wipe = async () => {
     if (state.serviceConfig.env !== 'dev') {
         error.throw(NOT_ALLOWED_IN_PRODUCTION_ERROR)
     } else {
-        await Store.wipe()
+        await StoreModule.wipe()
         logger.warn('System Wiped By Developer')
     }
 }

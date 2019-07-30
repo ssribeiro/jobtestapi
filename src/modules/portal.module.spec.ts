@@ -3,12 +3,14 @@
 /// <reference path="../../types/chai-like/index.d.ts" />
 
 import { expect } from 'chai'
+import { Store } from "../"
 import { ALREADY_STARTED_ERROR, PortalModule, state } from './portal.module'
 
 describe('PortalModule', () => {
 
-    after(done => {
-      PortalModule.stop().then(done)
+    after(async () => {
+      await PortalModule.stop()
+      await Store.stop()
     })
 
     it('should exist', () => {

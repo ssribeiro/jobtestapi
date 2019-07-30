@@ -67,15 +67,26 @@ const start = async () => {
 
 const stop = async () => {
     if (state.httpServer) {
+        await state.httpServer.removeAllListeners()
         await state.httpServer.close()
+        state.httpServer = null
+        state.startedAt = undefined
     }
 }
 
 const config = (portalConfig?: IPortalModuleConfig) => {
     if (portalConfig) {
-        state.port = portalConfig.port || state.port
-        state.host = portalConfig.host || state.host
+        if (portalConfig.port) {
+            state.port = portalConfig.port
+        }
+        if (portalConfig.host) {
+            state.host = portalConfig.host
+        }
     }
+    state.expressApp = express()
+        .use(cors())
+        .use(express.urlencoded({ extended: false }))
+        .use(express.json())
     route()
 }
 

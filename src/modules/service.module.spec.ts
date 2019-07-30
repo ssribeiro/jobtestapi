@@ -28,7 +28,13 @@ describe('ServiceModule', () => {
             expect(state.serviceConfig.env).to.be.equal('dev')
         })
 
+        it('should run config', () => {
+            ServiceModule.config()
+            expect(ServiceModule).to.be.exist
+        })
+
         it('should overide config', () => {
+            expect(ServiceModule).to.be.exist
             ServiceModule.config({
                 env: 'prod',
                 portalConfig: {
@@ -37,6 +43,12 @@ describe('ServiceModule', () => {
             })
             expect(state.serviceConfig.env).to.be.equal('prod')
             expect(Portal.getApiHost()).to.be.equal('somehttp')
+            ServiceModule.config({
+                env: 'dev',
+                portalConfig: {
+                    host: 'localhost',
+                },
+            })
         })
     })
 
