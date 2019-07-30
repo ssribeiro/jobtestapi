@@ -8,21 +8,22 @@ trmRouter.post('/', (req: express.Request, res: express.Response) => {
     let source = req.body.source
     let target = req.body.target
     try {
-        source = Trm.validateCurrencyCode(source)
-        target = Trm.validateCurrencyCode(target)
+        Trm.updateTablesForCurrency(
+            Trm.validateCurrencyCode(source),
+            Trm.validateCurrencyCode(target)
+        )
+            .then(() => {
+                res.statusCode = 200
+                res.send(SUCCESS_MESSAGE)
+            })
+            .catch((e: JobtestError) => {
+                res.statusCode = 500
+                res.send(e)
+            })
     } catch (e) {
         res.statusCode = 400
         res.send(e)
     }
-    Trm.updateTablesForCurrency(source, target)
-        .then(() => {
-          res.statusCode = 200
-          res.send(SUCCESS_MESSAGE)
-        })
-        .catch((e: JobtestError) => {
-            res.statusCode = 500
-            res.send(e)
-        })
 })
 
 /*trmRouter.get('/', (req: express.Request, res: express.Response) => {

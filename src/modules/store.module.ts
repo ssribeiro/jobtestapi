@@ -2,10 +2,20 @@ import { Db, MongoClient, Server } from 'mongodb'
 
 import { error, logger } from '../'
 
-const NO_DB_ERROR = 'NO_DB_ERROR'
-const VOID_DB = new Db('void', new Server('voidhost', 1))
-const TIMEOUT_WAITING_FOR_DB_AVAILABLE = 10
-const REST_TIME_FOR_TRYING_AGAIN_CONNECTION_WITH_DB: number = 500
+export const NO_DB_ERROR = 'NO_DB_ERROR'
+export const VOID_DB = new Db('void', new Server('voidhost', 1))
+export const TIMEOUT_WAITING_FOR_DB_AVAILABLE = 10
+// export const REST_TIME_FOR_TRYING_AGAIN_CONNECTION_WITH_DB: number = 500
+
+export const DEFAULT_MONGO_OPTIONS = {
+    db: 'jobtest',
+    host: 'localhost',
+    password: 'password',
+    poolSize: 10,
+    port: 27017,
+    username: 'admin',
+}
+export const DEFAULT_MONGO_URL = 'mongodb://admin:password@localhost:27017'
 
 export interface IStoreModuleConfig {
     plugin?: 'mongo' | 'none'
@@ -31,16 +41,9 @@ interface IStoreModuleState {
     db?: Db
 }
 
-const state: IStoreModuleState = {
-    mongoOptions: {
-        db: 'jobtest',
-        host: 'localhost',
-        password: 'password',
-        poolSize: 10,
-        port: 27017,
-        username: 'admin',
-    },
-    mongoUrl: 'mongodb://admin:password@localhost:27017',
+export const state: IStoreModuleState = {
+    mongoOptions: DEFAULT_MONGO_OPTIONS,
+    mongoUrl: DEFAULT_MONGO_URL,
     plugin: 'mongo',
 }
 
@@ -84,20 +87,30 @@ const config = (storeConfig?: IStoreModuleConfig) => {
 const start = async () => {
     if (!state.startedAt) {
         state.startedAt = Date.now()
-        await connectStore().catch(async e => {
+        await connectStore() /*.catch(async e => {
             // try again after some time
             await new Promise(r =>
                 setTimeout(r, REST_TIME_FOR_TRYING_AGAIN_CONNECTION_WITH_DB)
             )
             await connectStore().catch(error.fatal)
-        })
+        })*/
         // await bakeDb()
         logger.success('connected to store')
     }
 }
 
+const stop = async () => {
+    if (state.mongoClient) {
+        state.mongoClient.removeAllListeners()
+        await state.mongoClient.close()
+        state.mongoClient = undefined
+        state.db = undefined
+        state.startedAt = undefined
+    }
+}
+
 /* tslint:disable:no-shadowed-variable */
-const connectStore = async () => {
+export const connectStore = async () => {
     if (state.mongoUrl && state.mongoOptions) {
         const client = await MongoClient.connect(state.mongoUrl, {
             poolSize: state.mongoOptions.poolSize,
@@ -123,8 +136,6 @@ const eraseDb = async () => {
     }
     if (state.db) {
         state.db.dropDatabase()
-    } else {
-        error.fatal(NO_DB_ERROR)
     }
 }
 
@@ -134,7 +145,7 @@ const getDb = async (): Promise<Db> => {
 }
 
 const grantDbAvailable = async () => {
-    return new Promise((resolveToAvailableGranted, rejectAsTimeoutReached) => {
+    return new Promise((resolveToAvailableGranted, rejectToTimeoutError) => {
         if (state.db) {
             resolveToAvailableGranted()
         } else {
@@ -143,8 +154,6 @@ const grantDbAvailable = async () => {
                     setTimeout(() => {
                         if (state.db) {
                             resolveToAvailableGranted()
-                        } else {
-                            rejectAsTimeoutReached(NO_DB_ERROR)
                         }
                     }, TIMEOUT_WAITING_FOR_DB_AVAILABLE)
                 })
@@ -153,7 +162,7 @@ const grantDbAvailable = async () => {
                     if (state.db) {
                         resolveToAvailableGranted()
                     } else {
-                        rejectAsTimeoutReached(NO_DB_ERROR)
+                        rejectToTimeoutError(NO_DB_ERROR)
                     }
                 }, TIMEOUT_WAITING_FOR_DB_AVAILABLE)
             }
@@ -165,5 +174,6 @@ export const StoreModule = {
     config,
     getDb,
     start,
+    stop,
     wipe: eraseDb,
 }

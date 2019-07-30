@@ -6,6 +6,11 @@ import { expect } from 'chai'
 import { ALREADY_STARTED_ERROR, PortalModule, state } from './portal.module'
 
 describe('PortalModule', () => {
+
+    after(done => {
+      PortalModule.stop().then(done)
+    })
+
     it('should exist', () => {
         expect(PortalModule).to.be.exist
         expect(PortalModule.config).to.be.exist

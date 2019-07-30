@@ -1,0 +1,69 @@
+version: '3.4'
+
+# x-common-variables: &common-depends
+#   - mongodb
+#   - eventstore
+#
+# x-common-variables: &common-environment
+#   MONGO_HOST: mongodb
+#   MONGO_PORT: 27017
+#   MONGO_USERNAME: admin
+#   MONGO_PASSWORD: password
+#   MONGO_DATABASE: dev
+#   EVENT_STORE_HOST: eventstore
+#   EVENT_STORE_SEND_PORT: 2113
+#   EVENT_STORE_STREAM_PORT: 1113
+#   EVENT_STORE_USERNAME: admin
+#   EVENT_STORE_PASSWORD: changeit
+#
+# x-common-variables: &common-links
+#   - mongodb
+#   - eventstore
+
+services:
+
+# The Services:
+
+#  auth:
+#    build: ./dockers/stone
+#    volumes:
+#      - ./dist/auth:/usr/src/service
+#    restart: always
+#    ports:
+#      - "7001:7001"
+#    depends_on: *common-depends
+#    environment:
+#      <<: *common-environment
+#      CEMENT_HOST_NAME: auth
+#    links: *common-links
+
+# The Essentials:
+
+  mongodb:
+    image: mongo:4
+    restart: always
+    #volumes:
+    #  - ./data/db:/data/db
+    ports:
+      - "27017:27017"
+    logging:
+      driver: "none"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    #  MONGO_DATA_DIR: /data/db
+      MONGO_LOG_DIR: /dev/null
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+      ME_CONFIG_MONGODB_SERVER: dockers_mongodb_1
+    depends_on:
+      - mongodb
+    logging:
+      driver: "none"
