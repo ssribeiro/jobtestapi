@@ -4,7 +4,6 @@ import {
     ITrmRateData,
     ITrmRateEntry,
     ITrmRateList,
-    logger,
     Store,
 } from '../'
 
@@ -17,14 +16,6 @@ export const TRM_COLLECTION_NAME = 'trm'
 export const UNIQUE_WORKING_PERIOD = '30'
 export const TRM_API_URI =
     'https://transferwise.com/gb/currency-converter/api/historic'
-
-/*
-interface ITrmModuleState {
-}
-
-const state: ITrmModuleState = {
-}
-*/
 
 const validateCurrencyCode = (currencyCodeCandidate: any): ICurrencyCode => {
     if (iCurrencyCode(currencyCodeCandidate)) {
