@@ -1,0 +1,187 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "This is an API for Jobtest",
+    "version" : "1.0.1",
+    "title" : "Jobtest TRM API",
+    "contact" : {
+      "email" : "luan@ssribeiro.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host" : "virtserver.swaggerhub.com",
+  "basePath" : "/angstone/jobtest/1.0.0",
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/system/ping" : {
+      "get" : {
+        "summary" : "ping from service",
+        "description" : "a simple ping\n",
+        "operationId" : "ping",
+        "produces" : [ "text/plain" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "pong"
+          }
+        }
+      }
+    },
+    "/trm" : {
+      "get" : {
+        "summary" : "retrieve stored trm values",
+        "description" : "You get paginated results of trm values\npreviously stored with the post method\n",
+        "operationId" : "retrieveTrmDataValues",
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "description" : "number of page for pagination",
+          "required" : false,
+          "type" : "integer",
+          "minimum" : 0,
+          "format" : "int32"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "maximum number of records to return",
+          "required" : false,
+          "type" : "integer",
+          "maximum" : 50,
+          "minimum" : 0,
+          "format" : "int32"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "search results paginated",
+            "schema" : {
+              "type" : "object",
+              "required" : [ "limit", "page", "results", "total" ],
+              "properties" : {
+                "page" : {
+                  "type" : "integer",
+                  "format" : "int32"
+                },
+                "limit" : {
+                  "type" : "integer",
+                  "format" : "int32",
+                  "example" : 30,
+                  "minimum" : 1,
+                  "maximum" : 50
+                },
+                "total" : {
+                  "type" : "integer",
+                  "format" : "int32",
+                  "example" : 100,
+                  "minimum" : 0
+                },
+                "results" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/definitions/TrmRateEntry"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "bad input parameter"
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Update Database With current TRM value",
+        "description" : "update database with value of an TRM\nfrom given source and target currency code\n",
+        "operationId" : "updateTrmTables",
+        "consumes" : [ "application/json" ],
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "UpdateTrmRequest",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/UpdateTrmRequest"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "item created"
+          },
+          "400" : {
+            "description" : "invalid input, object invalid"
+          }
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "TrmRateEntry" : {
+      "type" : "object",
+      "required" : [ "rate", "source", "target", "time" ],
+      "properties" : {
+        "source" : {
+          "$ref" : "#/definitions/CurrencyCode"
+        },
+        "target" : {
+          "$ref" : "#/definitions/CurrencyCode"
+        },
+        "time" : {
+          "type" : "string",
+          "format" : "date-time",
+          "example" : "2016-08-29T09:12:33"
+        },
+        "rate" : {
+          "type" : "number",
+          "format" : "float64",
+          "example" : 1.23
+        }
+      }
+    },
+    "UpdateTrmRequest" : {
+      "type" : "object",
+      "required" : [ "source", "target" ],
+      "properties" : {
+        "source" : {
+          "$ref" : "#/definitions/CurrencyCode"
+        },
+        "target" : {
+          "$ref" : "#/definitions/CurrencyCode"
+        }
+      }
+    },
+    "CurrencyCode" : {
+      "type" : "string",
+      "example" : "USD"
+    },
+    "inline_response_200" : {
+      "required" : [ "limit", "page", "results", "total" ],
+      "properties" : {
+        "page" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "limit" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 30,
+          "minimum" : 1,
+          "maximum" : 50
+        },
+        "total" : {
+          "type" : "integer",
+          "format" : "int32",
+          "example" : 100,
+          "minimum" : 0
+        },
+        "results" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/TrmRateEntry"
+          }
+        }
+      }
+    }
+  }
+}
