@@ -48,15 +48,8 @@ Those are the ones I found most important.
 
 I do not think so.
 I think typescript has capability for evolve as it own and become a new language detached from javascript eventually. However javascript itself is evolving too and is becaming more and more type-friendly.
-I think most chances are that javascript embrace types in a way that will be good as (or beter?) typescript without the transpiling inconveniences.
-
-You can save any file of the workspace to **Google Drive**, **Dropbox** or **GitHub** by opening the **Synchronize** sub-menu and clicking **Save on**. Even if a file in the workspace is already synced, you can save it to another location. StackEdit can sync one file with multiple locations and accounts.
-
-## Synchronize a file
-
-Once your file is linked to a synchronized location, StackEdit will periodically synchronize it by downloading/uploading any modification. A merge will be performed if necessary and conflicts will be resolved.
-
-If you just have modified your file and you want to force syncing, click the **Synchronize now** button in the navigation bar.
+I think most chances are that javascript embrace types in a way that will be good as (or better?) typescript.
+This is really hard to guess.
 
 # Aditional Packages
 - chalk: to colorize terminal output,
