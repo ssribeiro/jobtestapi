@@ -8,7 +8,7 @@ Tried to keep loose coupling and good reusability.
 
 ## Modules
 
-I keep all modules with all state variables together on a **state** object. This way is easy to keep track of states during **phases** of execution.
+I keep all modules with all state variables together on a **state** object. This way is easy to keep track of state during **phases** of execution.
 Almost all the modules has **config**, **start** and **stop** functions, that does control the states.
 Also they expose their **functionality** as **functions**.
 
@@ -38,7 +38,7 @@ Excuses aside, I sacrificed many usefull **e2eSpecs** because I tried to accompl
 In a single word? **robustness** !
 I thinks it is the most important benefit. It is amazing this power of the types. They make easy for someone to use your libraries and modules without having to even read the documentation, in some cases. That is because the types almost guide the programming itself.
 
-You can also share interfaces between multiple services and between back and front end. It is almost like if you are carring the documentation inside the code itself. The type inference and IntelliSense are amazing. 
+You can also share interfaces between multiple services and between back and front end. It is almost like if you are carring the documentation inside the code itself. The type inference and IntelliSense are amazing.
 
 The Static typing grant security when programing and avoid many errors. In frontend it helps you to deal with browser compatibility allowing the transpile to multiple javascript versions.
 
