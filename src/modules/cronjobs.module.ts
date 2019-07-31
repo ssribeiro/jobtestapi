@@ -7,15 +7,15 @@ export const CRONJOB_FAILED_MESSAGE = 'Cronjob failed: '
 export const DEFAULT_TIMEZONE = 'America/Sao_Paulo'
 
 export interface ICronjobsModuleConfig {
-  timezone?: string
+    timezone?: string
 }
 
 interface ICronjobModuleState {
-    jobs: cron.CronJob[],
+    jobs: cron.CronJob[]
     timezone: string
 }
 
-const state: ICronjobModuleState = {
+export const state: ICronjobModuleState = {
     jobs: [],
     timezone: DEFAULT_TIMEZONE,
 }
@@ -32,7 +32,7 @@ const start = async () => {
                         logger.success(CRONJOB_SUCCESS_MESSAGE + cronjob.name)
                     })
                     .catch((e: Error) => {
-                        error.op(CRONJOB_FAILED_MESSAGE + cronjob.name, e)
+                        error.op(CRONJOB_FAILED_MESSAGE + cronjob.name, { e })
                     })
             },
             undefined,
@@ -44,11 +44,11 @@ const start = async () => {
 }
 
 const config = (cronjobsModuleConfig?: ICronjobsModuleConfig) => {
-  if(cronjobsModuleConfig) {
-    if(cronjobsModuleConfig.timezone) {
-      state.timezone = cronjobsModuleConfig.timezone;
+    if (cronjobsModuleConfig) {
+        if (cronjobsModuleConfig.timezone) {
+            state.timezone = cronjobsModuleConfig.timezone
+        }
     }
-  }
 }
 
 const stop = async () => {
