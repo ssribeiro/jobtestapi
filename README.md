@@ -10,7 +10,7 @@ Tried to keep loose coupling and good reusability.
 
 I keep all modules with all state variables together on a **state** object. This way is easy to keep track of states during **phases** of execution.
 Almost all the modules has **config**, **start** and **stop** functions, that does control the states.
-Also they expose their **functionality** as **functions** in the same object for other modules to call for.
+Also they expose their **functionality** as **functions**.
 
 ## Test
 
