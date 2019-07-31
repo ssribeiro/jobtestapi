@@ -18,8 +18,8 @@ All tests in **spec** files along with homonymous tested file. Additional **e2eS
 
 ## Error, Logger
 
-They are all encapsulated in an easy to upgrade and change implementation.
-I find the **error** tool very useful because it has shortcuts for dealing the errors the right way easily
+They are all encapsulated in an way that is easy to upgrade and change.
+I find the **error** tool very useful because it has shortcuts that allows take care of the errors the right way easily
 
 ## Docker
 
