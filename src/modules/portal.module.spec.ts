@@ -21,13 +21,14 @@ describe('PortalModule', () => {
 
     describe('config', () => {
         it('should have default configuration', () => {
-            expect(PortalModule.getApiPort()).to.be.equal(3000)
+            expect(PortalModule.getApiPort()).to.be.an('number')
             expect(PortalModule.getApiHost()).to.be.equal('localhost')
         })
 
         it('should overide config', () => {
             PortalModule.config({
                 host: 'testhost',
+                port: 3000,
             })
             expect(state.host).to.be.equal('testhost')
             expect(state.port).to.be.equal(3000)

@@ -25,7 +25,8 @@
       "sinon",
       "sinon-chai",
       "chai-things",
-      "request-promise-native"
+      "request-promise-native",
+      "supertest"
     ]
   },
   "include": [
