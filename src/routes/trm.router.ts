@@ -1,5 +1,5 @@
 import * as express from 'express'
-import { ITrmRateData, ITrmRateList, JobtestError, logger, Trm } from '../'
+import { ITrmRateData, JobtestError, logger, Trm } from '../'
 
 export const SUCCESS_MESSAGE = 'SUCCESS'
 
