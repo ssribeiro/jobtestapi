@@ -1,11 +1,5 @@
 import * as rpn from 'request-promise-native'
-import {
-    error,
-    ITrmRateData,
-    ITrmRateEntry,
-    ITrmRateList,
-    Store,
-} from '../'
+import { error, ITrmRateData, ITrmRateEntry, ITrmRateList, Store } from '../'
 
 import { ICurrencyCode, iCurrencyCode } from '../interfaces/currency-code.i'
 
@@ -58,14 +52,14 @@ const retrievePastStoredRates = async (
     }
     await resultsCursor.limit(limit)
     await resultsCursor.skip(page * limit)
-    const results = (await resultsCursor.toArray()).map((entryDb) => {
-      const dataEntry: ITrmRateEntry = {
-        rate: entryDb.rate,
-        source: entryDb.source,
-        target: entryDb.target,
-        time: entryDb.time,
-      }
-      return dataEntry
+    const results = (await resultsCursor.toArray()).map(entryDb => {
+        const dataEntry: ITrmRateEntry = {
+            rate: entryDb.rate,
+            source: entryDb.source,
+            target: entryDb.target,
+            time: entryDb.time,
+        }
+        return dataEntry
     })
     const data: ITrmRateData = {
         limit,
