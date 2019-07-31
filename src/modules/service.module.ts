@@ -4,6 +4,7 @@ import { error, logger } from '../'
 
 import { CronjobsModule, PortalModule, StoreModule } from './'
 
+import { ICronjobsModuleConfig } from './cronjobs.module'
 import { IPortalModuleConfig } from './portal.module'
 import { IStoreModuleConfig } from './store.module'
 
@@ -14,6 +15,7 @@ export interface IServiceModuleConfig {
     env?: 'dev' | 'prod'
     storeConfig?: IStoreModuleConfig
     portalConfig?: IPortalModuleConfig
+    cronjobsConfig?: ICronjobsModuleConfig
 }
 
 interface IServiceModuleState {
@@ -37,10 +39,13 @@ const config = (serviceConfig?: IServiceModuleConfig) => {
     if (serviceConfig.portalConfig) {
         state.serviceConfig.portalConfig = serviceConfig.portalConfig
     }
+    if (serviceConfig.cronjobsConfig) {
+        state.serviceConfig.cronjobsConfig = serviceConfig.cronjobsConfig
+    }
 
     StoreModule.config(state.serviceConfig.storeConfig)
     PortalModule.config(state.serviceConfig.portalConfig)
-    CronjobsModule.config()
+    CronjobsModule.config(state.serviceConfig.cronjobsConfig)
 }
 
 const start = async () => {
