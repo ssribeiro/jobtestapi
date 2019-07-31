@@ -14,7 +14,7 @@ Also they expose their **functionality** as **functions**.
 
 ## Test
 
-All tests in **spec** files along with homonymous tested file. Additional **e2e Specs** created for end-to-end tests (the ones concerning supertest).
+All tests in **spec** files along with homonymous tested file. Additional **e2eSpecs** folder created for end-to-end tests (the ones concerning supertest).
 
 ## Error, Logger
 
