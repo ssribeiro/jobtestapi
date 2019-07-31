@@ -8,7 +8,7 @@ import { IPortalModuleConfig } from './portal.module'
 import { IStoreModuleConfig } from './store.module'
 
 export const NOT_ALLOWED_IN_PRODUCTION_ERROR = 'NOT_ALLOWED_IN_PRODUCTION_ERROR'
-export const NOT_STARTED_ERROR = 'NOT_STARTED_ERROR'
+// export const NOT_STARTED_ERROR = 'NOT_STARTED_ERROR'
 
 export interface IServiceModuleConfig {
     env?: 'dev' | 'prod'
@@ -56,14 +56,13 @@ const start = async () => {
 }
 
 const stop = async () => {
-    if (state.startedAt) {
-        state.startedAt = undefined
-
-        await PortalModule.stop()
-        await StoreModule.stop()
-    } else {
+    // if (state.startedAt) {
+    await PortalModule.stop()
+    await StoreModule.stop()
+    state.startedAt = undefined
+    /*} else {
         throw NOT_STARTED_ERROR
-    }
+    }*/
 }
 
 const wipe = async () => {

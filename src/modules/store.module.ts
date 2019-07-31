@@ -157,14 +157,14 @@ const grantDbAvailable = async () => {
                         }
                     }, TIMEOUT_WAITING_FOR_DB_AVAILABLE)
                 })
-            } else {
-                setTimeout(() => {
-                    if (state.db) {
-                        resolveToAvailableGranted()
-                    } else {
-                        rejectToTimeoutError(NO_DB_ERROR)
-                    }
-                }, TIMEOUT_WAITING_FOR_DB_AVAILABLE)
+                // } else {
+                //     setTimeout(() => {
+                //         if (state.db) {
+                //             resolveToAvailableGranted()
+                //         } else {
+                //             rejectToTimeoutError(NO_DB_ERROR)
+                //         }
+                //     }, TIMEOUT_WAITING_FOR_DB_AVAILABLE)
             }
         }
     })

@@ -3,14 +3,12 @@
 /// <reference path="../../types/chai-like/index.d.ts" />
 
 import { expect } from 'chai'
-import { Store } from "../"
-import { ALREADY_STARTED_ERROR, PortalModule, state } from './portal.module'
+import { Service } from '../'
+import { /*ALREADY_STARTED_ERROR,*/ PortalModule, state } from './portal.module'
 
 describe('PortalModule', () => {
-
     after(async () => {
-      await PortalModule.stop()
-      await Store.stop()
+        await Service.stop()
     })
 
     it('should exist', () => {
@@ -66,6 +64,7 @@ describe('PortalModule', () => {
             })
     }).timeout(5000)
 
+    /*
     it('should fail restart', done => {
         process.env.JOBTEST_ENV = 'dev'
         PortalModule.config()
@@ -79,4 +78,5 @@ describe('PortalModule', () => {
                 PortalModule.stop().then(done)
             })
     }).timeout(5000)
+    */
 })

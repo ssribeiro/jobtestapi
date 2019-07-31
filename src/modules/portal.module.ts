@@ -6,7 +6,7 @@ import * as cors from 'cors'
 import * as express from 'express'
 import * as http from 'http'
 
-export const ALREADY_STARTED_ERROR = 'SERVER ALREADY STARTED ERROR'
+// export const ALREADY_STARTED_ERROR = 'SERVER ALREADY STARTED ERROR'
 
 export interface IPortalModuleConfig {
     port?: number
@@ -60,18 +60,20 @@ const start = async () => {
             },
         ])
         logger.log('listening on port: ' + state.port)
-    } else {
+    } /*else {
         throw error.fatal(ALREADY_STARTED_ERROR)
-    }
+    }*/
 }
 
 const stop = async () => {
+  if(state.startedAt) {
     if (state.httpServer) {
-        await state.httpServer.removeAllListeners()
-        await state.httpServer.close()
-        state.httpServer = null
-        state.startedAt = undefined
+      state.httpServer.removeAllListeners()
+      await state.httpServer.close()
+      state.httpServer = null
     }
+    state.startedAt = undefined
+  }
 }
 
 const config = (portalConfig?: IPortalModuleConfig) => {

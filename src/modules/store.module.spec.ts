@@ -3,21 +3,20 @@
 /// <reference path="../../types/chai-like/index.d.ts" />
 
 import { expect } from 'chai'
+import { Service } from '../'
 
 import {
     connectStore,
     DEFAULT_MONGO_OPTIONS,
     DEFAULT_MONGO_URL,
-    NO_DB_ERROR,
     state,
     StoreModule,
-    TIMEOUT_WAITING_FOR_DB_AVAILABLE,
-    VOID_DB,
 } from './store.module'
+
 
 describe('StoreModule', () => {
     after(done => {
-        StoreModule.stop().then(done)
+        Service.stop().then(done)
     })
 
     it('should exist', () => {

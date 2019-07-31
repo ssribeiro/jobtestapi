@@ -1,4 +1,4 @@
-import { Service, Store } from './'
+import { Service } from './'
 
 Service.config({
     portalConfig: {
@@ -20,3 +20,5 @@ Service.config({
 })
 
 Service.start()
+
+export { Service }

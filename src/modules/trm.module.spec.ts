@@ -2,7 +2,7 @@
 import { expect } from 'chai'
 import * as rpn from 'request-promise-native'
 
-import { ICurrencyCode, Store } from '../'
+import { ICurrencyCode, Service, Store } from '../'
 import {
     NO_CURRENCY_CODE_VALIDATION_ERROR,
     TRM_COLLECTION_NAME,
@@ -11,7 +11,7 @@ import {
 
 describe('TrmModule', () => {
     after(done => {
-        Store.stop().then(done)
+        Service.stop().then(done)
     })
 
     const sampleSourceCurrencyCode = 'USD'
