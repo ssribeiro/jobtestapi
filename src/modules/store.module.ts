@@ -96,6 +96,10 @@ const start = async () => {
         })*/
         // await bakeDb()
         logger.success('connected to store')
+    } else {
+        while (!state.mongoClient) {
+            await new Promise(r => setTimeout(r, 100))
+        }
     }
 }
 

@@ -2,7 +2,7 @@
 // import * as path from 'path'
 import { error, logger } from '../'
 
-import { PortalModule, StoreModule } from './'
+import { CronjobsModule, PortalModule, StoreModule } from './'
 
 import { IPortalModuleConfig } from './portal.module'
 import { IStoreModuleConfig } from './store.module'
@@ -40,15 +40,16 @@ const config = (serviceConfig?: IServiceModuleConfig) => {
 
     StoreModule.config(state.serviceConfig.storeConfig)
     PortalModule.config(state.serviceConfig.portalConfig)
+    CronjobsModule.config()
 }
 
 const start = async () => {
     if (!state.startedAt) {
         logger.log('starting service..')
-        // PortalModule,
-        // CronjobModule
 
+        await StoreModule.start()
         await PortalModule.start()
+        await CronjobsModule.start()
 
         state.startedAt = Date.now()
         logger.success('Service ' + ' started at ' + state.startedAt)
@@ -57,6 +58,7 @@ const start = async () => {
 
 const stop = async () => {
     // if (state.startedAt) {
+    await CronjobsModule.stop()
     await PortalModule.stop()
     await StoreModule.stop()
     state.startedAt = undefined
