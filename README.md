@@ -56,3 +56,4 @@ This is really hard to guess.
 - request: request-promise-native package dependency not installed (I should report it)
 - sinon, sinon-chai, chai-things, chai-like: aditional useful testing libraries
 - @types: a lot, of course
+- rimraf: (in global) easy way to clean up old files
