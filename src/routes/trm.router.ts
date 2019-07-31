@@ -29,7 +29,9 @@ trmRouter.post('/', (req: express.Request, res: express.Response) => {
 
 trmRouter.get('/', (req: express.Request, res: express.Response) => {
     logger.dev('GOT REQUEST: ', req.body)
-    Trm.retrievePastStoredRates()
+    const page = req.query.page || 0
+    const limit = req.query.limit || 30
+    Trm.retrievePastStoredRates(page, limit)
         .then((pastValues: ITrmRateData) => {
             res.statusCode = 200
             res.send(pastValues)
