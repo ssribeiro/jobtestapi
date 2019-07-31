@@ -3,10 +3,31 @@
 /// <reference path="../../types/chai-like/index.d.ts" />
 
 import { expect } from 'chai'
-import { Portal } from '../'
+import { Portal, Store } from '../'
 import { ServiceModule, state } from './service.module'
 
 describe('ServiceModule', () => {
+    before(done => {
+        Store.stop().then(done)
+        ServiceModule.config({
+            env: 'dev',
+            portalConfig: {
+                host: 'localhost',
+                port: 3000,
+            },
+            storeConfig: {
+                plugin: 'mongo',
+                pluginConfig: {
+                    db: 'testjobdevtest',
+                    host: 'localhost',
+                    password: 'password',
+                    port: 27017,
+                    username: 'admin',
+                },
+            },
+        })
+    })
+
     after(done => {
         ServiceModule.stop()
             .then(done)
@@ -25,7 +46,7 @@ describe('ServiceModule', () => {
 
     describe('config', () => {
         it('should have default configuration', () => {
-            expect(state.serviceConfig.env).to.be.equal('dev')
+            expect(state.serviceConfig.env).to.be.oneOf(['dev', 'prod'])
         })
 
         it('should run config', () => {
@@ -52,42 +73,23 @@ describe('ServiceModule', () => {
         })
     })
 
-    /*describe('routeSystem', () => {
-        it('should create system routes', () => {
-            ServiceModule.config()
-            expect(state.expressApp._router.stack)
-                .to.be.an('array')
-                .that.contains.something.like({
-                    regexp: /^\/system\/?(?=\/|$)/i,
-                })
+    it('should start', async () => {
+        await ServiceModule.start().catch((e: Error) => {
+            expect(e).to.be.not.exist
+        })
+        expect(state.startedAt).to.be.at.least(Date.now() - 5000)
+    })
+
+    it('should wipe', async () => {
+        await ServiceModule.wipe().catch((e: Error) => {
+            expect(e).to.be.not.exist
         })
     })
 
-    it('should start', done => {
-        ServiceModule.config()
-        ServiceModule.start()
-            .then(() => {
-                expect(state.startedAt).to.be.at.least(Date.now() - 5000)
-                done()
-            })
-            .catch((e: Error) => {
-                expect(e).to.be.not.exist
-                done()
-            })
-    }).timeout(5000)
-
-    it('should fail restart', done => {
-        process.env.JOBTEST_ENV = 'dev'
-        ServiceModule.config()
-        ServiceModule.start()
-            .then(() => {
-                expect(false).to.be.true
-                done()
-            })
-            .catch((e: Error) => {
-                expect(e).to.be.equals(ALREADY_STARTED_ERROR)
-                ServiceModule.stop().then(done)
-            })
-    }).timeout(5000)
-    */
+    it('should never wipe in production', async () => {
+        ServiceModule.config({ env: 'prod' })
+        await ServiceModule.wipe().catch((e: Error) => {
+            expect(e).to.be.exist
+        })
+    })
 })
