@@ -61,17 +61,26 @@ const retrievePastStoredRates = async (
 ): Promise<ITrmRateData> => {
     const db = await Store.getDb()
     const resultsCursor = await db.collection(TRM_COLLECTION_NAME).find()
-    const howMany = await resultsCursor.count()
-    if (page * limit > howMany) {
+    const total = await resultsCursor.count()
+    if (page * limit > total) {
         throw error.is(RESULTS_OFF_LIMIT_ERROR)
     }
     await resultsCursor.limit(limit)
     await resultsCursor.skip(page * limit)
+    const results = (await resultsCursor.toArray()).map((entryDb) => {
+      const dataEntry: ITrmRateEntry = {
+        rate: entryDb.rate,
+        source: entryDb.source,
+        target: entryDb.target,
+        time: entryDb.time,
+      }
+      return dataEntry
+    })
     const data: ITrmRateData = {
         limit,
         page,
-        results: await resultsCursor.toArray(),
-        total: howMany,
+        results,
+        total,
     }
     return data
 }

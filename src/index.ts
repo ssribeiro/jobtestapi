@@ -7,6 +7,7 @@ import {
     ITrmRateData,
     ITrmRateEntry,
     ITrmRateList,
+    ITrmPostRequest,
 } from './interfaces'
 
 import {
@@ -26,6 +27,7 @@ export {
     ITrmRateList,
     ITrmRateEntry,
     ITrmRateData,
+    ITrmPostRequest,
     // Modules
     Service,
     Store,
